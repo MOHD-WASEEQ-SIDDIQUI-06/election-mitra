@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Mitra - Your AI Election Guide</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🗳️</span>
+                <span class="logo-text">Election <span>Mitra</span></span>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="#faq-section">FAQs</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="about">
+        <div class="hero-content">
+            <div class="hero-text">
+                <span class="badge">🇮🇳 Powered by AI</span>
+                <h1>Your Personal <span>Election Guide</span></h1>
+                <p>Understand India's election process, voting steps, candidates, and timelines — all in simple Hinglish. Ask anything, learn everything.</p>
+                <div class="hero-stats">
+                    <div class="stat"><span class="stat-number">543</span><span class="stat-label">Lok Sabha Seats</span></div>
+                    <div class="stat"><span class="stat-number">97Cr+</span><span class="stat-label">Registered Voters</span></div>
+                    <div class="stat"><span class="stat-number">10L+</span><span class="stat-label">Polling Booths</span></div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card card-1">🗳️ Voter ID</div>
+                <div class="floating-card card-2">📋 EVM</div>
+                <div class="floating-card card-3">🇮🇳 ECI</div>
+                <div class="hero-circle"></div>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-container">
+        <div class="chat-wrapper">
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <div class="ai-avatar">🤖</div>
+                    <div><h3>Election Mitra AI</h3><p>Always ready to help • Free forever</p></div>
+                </div>
+                <button class="clear-chat-btn" onclick="clearChat()" title="Clear chat">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14"/></svg>
+                </button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <p><strong>Namaste! 🙏</strong> Main <strong>Election Mitra</strong> hoon — aapka AI election guide.</p>
+                        <p>Mujhse puchhiye:</p>
+                        <ul>
+                            <li>Voter ID kaise banayein?</li>
+                            <li>EVMs kaise kaam karti hain?</li>
+                            <li>Apna polling booth kaise dhundhein?</li>
+                            <li>Chunav ki poori prakriya samjhiye</li>
+                        </ul>
+                        <p>Neeche kuch quick buttons bhi hain — try kariye!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions" id="quickActions">
+                <button onclick="sendQuickMessage('Voter ID registration process samjhao')">🪪 Voter ID Registration</button>
+                <button onclick="sendQuickMessage('EVM aur VVPAT kya hota hai?')">📟 EVM vs VVPAT</button>
+                <button onclick="sendQuickMessage('Voting day pe kya documents lekar jaana hai?')">📋 Voting Day Checklist</button>
+                <button onclick="sendQuickMessage('Lok Sabha elections kaise hote hain?')">🏛️ Lok Sabha Process</button>
+                <button onclick="sendQuickMessage('NOTA kya hai aur kab use karein?')">❌ What is NOTA?</button>
+                <button onclick="sendQuickMessage('Apna polling booth kaise check karein?')">📍 Find My Booth</button>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="userInput" class="chat-input" placeholder="Aap jo poochna chahein yahan likhiye..." onkeypress="if(event.key==='Enter')sendMessage()">
+                <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="info-grid" id="faq-section">
+            <div class="info-card">
+                <div class="info-icon">🪪</div>
+                <h3>Voter Registration</h3>
+                <p>Online registration via <strong>nvsp.in</strong>. Fill Form 6, upload documents, get verified.</p>
+                <a href="https://www.nvsp.in" target="_blank" class="info-link">Register Now →</a>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">📟</div>
+                <h3>EVM Explained</h3>
+                <p>Electronic Voting Machine with VVPAT slip for verification. 100% secure, no internet connection.</p>
+                <a href="https://eci.gov.in/evm" target="_blank" class="info-link">Learn More →</a>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">📍</div>
+                <h3>Find Your Booth</h3>
+                <p>Use <strong>Voter Helpline App</strong> or visit electoralsearch.eci.gov.in to locate your polling station.</p>
+                <a href="https://electoralsearch.eci.gov.in" target="_blank" class="info-link">Search Booth →</a>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">📊</div>
+                <h3>Election Results</h3>
+                <p>Live results on <strong>results.eci.gov.in</strong>. Track party-wise, state-wise, and constituency-wise data.</p>
+                <a href="https://results.eci.gov.in" target="_blank" class="info-link">View Results →</a>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">📝</div>
+                <h3>Candidate Info</h3>
+                <p>Check candidate affidavits, criminal records, assets, and education details via <strong>ECI portal</strong>.</p>
+                <a href="https://affidavit.eci.gov.in" target="_blank" class="info-link">Check Candidates →</a>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">🛡️</div>
+                <h3>Voter Rights</h3>
+                <p>Know your rights: secret ballot, no intimidation, accessible polling booths, and complaint mechanisms.</p>
+                <a href="https://eci.gov.in/voter-rights" target="_blank" class="info-link">Know Rights →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="logo-icon">🗳️</span>
+                <span class="logo-text">Election <span>Mitra</span></span>
+                <p>An AI-powered initiative to educate Indian citizens about the democratic process.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="https://eci.gov.in" target="_blank">Election Commission of India</a>
+                <a href="https://www.nvsp.in" target="_blank">Voter Registration Portal</a>
+                <a href="https://voterportal.eci.gov.in" target="_blank">Voter Portal</a>
+                <a href="https://results.eci.gov.in" target="_blank">Election Results</a>
+            </div>
+            <div class="footer-disclaimer">
+                <h4>Disclaimer</h4>
+                <p>This is an informational guide powered by AI. Official information is available on the ECI website. This platform is not affiliated with the Election Commission of India.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Election Mitra. Built for Democracy. Data sourced from ECI public records.</p>
+        </div>
+    </footer>
+
+    <script>
+        const sessionId = "session_" + Math.random().toString(36).substr(2, 9);
+        let isProcessing = false;
+
+        function sendQuickMessage(message) {
+            document.getElementById("userInput").value = message;
+            sendMessage();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById("userInput");
+            const message = input.value.trim();
+            if (!message || isProcessing) return;
+
+            isProcessing = true;
+            document.getElementById("sendBtn").disabled = true;
+            input.value = "";
+
+            addMessage(message, "user");
+            document.getElementById("quickActions").style.display = "none";
+
+            const typingId = addTypingIndicator();
+
+            try {
+                const response = await fetch("/api/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: message, session_id: sessionId })
+                });
+                const data = await response.json();
+                removeTypingIndicator(typingId);
+                addMessage(data.error ? "Error: " + data.error : data.reply, "ai");
+            } catch (error) {
+                removeTypingIndicator(typingId);
+                addMessage("Connection error. Please check your internet.", "ai");
+            }
+
+            isProcessing = false;
+            document.getElementById("sendBtn").disabled = false;
+            input.focus();
+        }
+
+        function addMessage(text, role) {
+            const messagesDiv = document.getElementById("chatMessages");
+            const div = document.createElement("div");
+            div.className = "message " + role + "-message";
+            div.innerHTML = '<div class="message-avatar">' + (role === "user" ? "👤" : "🤖") + '</div><div class="message-content">' + text.replace(/\n/g, "<br>") + '</div>';
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function addTypingIndicator() {
+            const messagesDiv = document.getElementById("chatMessages");
+            const id = "typing_" + Date.now();
+            const div = document.createElement("div");
+            div.id = id;
+            div.className = "message ai-message";
+            div.innerHTML = '<div class="message-avatar">🤖</div><div class="message-content"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            return id;
+        }
+
+        function removeTypingIndicator(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function clearChat() {
+            document.getElementById("chatMessages").innerHTML = '<div class="message ai-message"><div class="message-avatar">🤖</div><div class="message-content"><p><strong>Chat cleared!</strong> How can I help you?</p></div></div>';
+            document.getElementById("quickActions").style.display = "flex";
+        }
+    </script>
+ 
+</body>
+</html>

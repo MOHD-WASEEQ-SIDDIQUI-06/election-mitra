@@ -1,0 +1,115 @@
+{
+  "elections": [
+    {
+      "id": 1,
+      "name": "Lok Sabha Elections 2024",
+      "date": "2024-04-19",
+      "type": "General",
+      "status": "completed",
+      "total_seats": 543,
+      "description": "General elections to elect members of the 18th Lok Sabha"
+    }
+  ],
+  "parties": [
+    {
+      "id": 1,
+      "name": "Bharatiya Janata Party",
+      "abbreviation": "BJP",
+      "symbol": "Lotus",
+      "founded": "1980",
+      "ideology": "Integral Humanism, Hindutva",
+      "color": "#FF9933"
+    },
+    {
+      "id": 2,
+      "name": "Indian National Congress",
+      "abbreviation": "INC",
+      "symbol": "Hand",
+      "founded": "1885",
+      "ideology": "Social Democracy, Secularism",
+      "color": "#0F7DC2"
+    },
+    {
+      "id": 3,
+      "name": "Aam Aadmi Party",
+      "abbreviation": "AAP",
+      "symbol": "Broom",
+      "founded": "2012",
+      "ideology": "Anti-Corruption, Populism",
+      "color": "#00B5B5"
+    }
+  ],
+  "candidates": [
+    {
+      "id": 1,
+      "name": "Narendra Modi",
+      "party": "BJP",
+      "constituency": "Varanasi",
+      "state": "Uttar Pradesh",
+      "age": 73,
+      "education": "MA in Political Science",
+      "criminal_cases": 0,
+      "assets": "3.1 Crore"
+    },
+    {
+      "id": 2,
+      "name": "Rahul Gandhi",
+      "party": "INC",
+      "constituency": "Wayanad",
+      "state": "Kerala",
+      "age": 53,
+      "education": "M.Phil in Development Studies",
+      "criminal_cases": 2,
+      "assets": "20.4 Crore"
+    },
+    {
+      "id": 3,
+      "name": "Arvind Kejriwal",
+      "party": "AAP",
+      "constituency": "New Delhi",
+      "state": "Delhi",
+      "age": 55,
+      "education": "B.Tech Mechanical Engineering",
+      "criminal_cases": 3,
+      "assets": "3.4 Crore"
+    }
+  ],
+  "states": [
+    {
+      "name": "Uttar Pradesh",
+      "capital": "Lucknow",
+      "total_seats": 80,
+      "population": "23 Crore"
+    },
+    {
+      "name": "Maharashtra",
+      "capital": "Mumbai",
+      "total_seats": 48,
+      "population": "12 Crore"
+    },
+    {
+      "name": "Delhi",
+      "capital": "New Delhi",
+      "total_seats": 7,
+      "population": "1.9 Crore"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How do I register to vote?",
+      "answer": "Visit www.nvsp.in and fill Form 6 online."
+    },
+    {
+      "question": "What documents do I need?",
+      "answer": "Voter ID or Aadhaar, Passport, Driving License."
+    },
+    {
+      "question": "How to find polling booth?",
+      "answer": "Visit electoralsearch.eci.gov.in and enter EPIC number."
+    },
+    {
+      "question": "What is NOTA?",
+      "answer": "Option to reject all candidates on EVM."
+    }
+  ]
+}
