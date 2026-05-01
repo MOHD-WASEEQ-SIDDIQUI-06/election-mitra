@@ -1,10 +1,7 @@
 import os
 import json
 from flask import Flask, render_template, request, jsonify
-from google import genai
-from dotenv import load_dotenv
-
-load_dotenv()
+import google.generativeai as genai
 
 app = Flask(__name__)
 
@@ -12,75 +9,40 @@ app = Flask(__name__)
 with open("data.json", "r", encoding="utf-8") as f:
     election_data = json.load(f)
 
-
+# Configure Gemini
 api_key = os.getenv("GEMINI_API_KEY")
-
 if not api_key:
-    raise ValueError("GEMINI_API_KEY not found in .env file")
+    raise ValueError("GEMINI_API_KEY environment variable not set")
 
-client = genai.Client(api_key=api_key)
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel("gemini-2.0-flash")
 
-# 🔥 STRONG SYSTEM PROMPT
-SYSTEM_PROMPT = """
-You are 'Election Mitra' 🇮🇳
+SYSTEM_PROMPT = """You are 'Election Mitra' - an AI assistant designed to help Indian citizens understand elections. Your role is to explain the Indian election process, voting steps, timelines, and FAQs in simple Hindi and English.
 
-Role:
-Help Indian citizens understand elections in a simple, friendly Hinglish style.
+Rules:
+1. Always be accurate about Indian election facts (Lok Sabha, Vidhan Sabha, EVM, VVPAT, ECI).
+2. Use a friendly, helpful tone in Hinglish (mix of Hindi and English).
+3. Keep answers under 150 words unless the user asks for details.
+4. If asked about political opinions, candidates, or parties, stay neutral.
+5. Guide users step-by-step for processes like voter registration, finding polling booth, and what to bring on voting day.
+6. Structure information with bullet points when listing steps.
 
-Instructions:
-- Always explain step-by-step
-- Use bullet points for processes
-- Keep answers under 120 words
-- Be neutral (no political bias)
-- Ask follow-up questions when helpful
+Current election data available:
+- Elections: Lok Sabha 2024 (completed)
+- Parties: BJP, INC, AAP
+- States: UP, Maharashtra, Delhi
+- Candidates: Narendra Modi, Rahul Gandhi, Arvind Kejriwal
 
-Topics:
-- Voter eligibility
-- Registration (NVSP)
-- Voting process (EVM, VVPAT)
-- Documents required
-- Polling booth guidance
+Use this data when relevant. If asked something not in this data, answer from your general knowledge about Indian elections."""
 
-If user is confused → simplify more  
-If user is first-time voter → guide step-by-step  
-"""
-
-# Conversation memory
+# Conversation history store
 conversations = {}
 
-def build_prompt(user_message, history):
-    history_text = ""
-    for msg in history[-6:]:
-        role = "User" if msg["role"] == "user" else "Assistant"
-        history_text += f"{role}: {msg['text']}\n"
-
-    return f"""
-{SYSTEM_PROMPT}
-
-Conversation:
-{history_text}
-
-User: {user_message}
-Assistant:
-"""
-
-def fallback_response(user_message):
-    msg = user_message.lower()
-
-    if "register" in msg:
-        return "Register karne ke liye NVSP website use karein:\nhttps://www.nvsp.in/\n\nSteps:\n• Form 6 fill karein\n• Documents upload karein\n• Submit karein"
-
-    if "eligibility" in msg:
-        return "Eligibility:\n• Age: 18+\n• Indian citizen\n• Electoral roll me naam hona chahiye"
-
-    if "vote" in msg:
-        return "Voting Steps:\n• Polling booth par jao\n• ID verify karo\n• EVM pe vote karo\n• VVPAT confirm karo"
-
-    return "Main help kar sakta hoon:\n• Registration\n• Eligibility\n• Voting steps\n\nAap kya jaana chahte ho?"
 
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 @app.route("/api/chat", methods=["POST"])
 def chat():
@@ -90,34 +52,32 @@ def chat():
         session_id = data.get("session_id", "default")
 
         if not user_message:
-            return jsonify({"error": "Message required"}), 400
+            return jsonify({"error": "Message is required"}), 400
 
+        # Initialize conversation if new session
         if session_id not in conversations:
             conversations[session_id] = []
 
-        history = conversations[session_id]
+        # Build message history
+        messages = [
+            {"role": "user", "parts": [{"text": SYSTEM_PROMPT}]},
+            {"role": "model", "parts": [{"text": "Understood. I will follow these instructions as Election Mitra."}]}
+        ]
 
-        prompt = build_prompt(user_message, history)
+        # Add conversation history (last 10 exchanges)
+        for msg in conversations[session_id][-10:]:
+            messages.append(msg)
 
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=prompt,
-                config={
-                    "temperature": 0.6,
-                    "max_output_tokens": 300
-                }
-            )
+        # Add current user message
+        messages.append({"role": "user", "parts": [{"text": user_message}]})
 
-            ai_reply = response.text.strip()
+        # Generate response using Gemini
+        response = model.generate_content(messages)
+        ai_reply = response.text.strip()
 
-        except Exception as ai_error:
-            print("Gemini Error:", ai_error)
-            ai_reply = fallback_response(user_message)
-
-        # Save conversation
-        history.append({"role": "user", "text": user_message})
-        history.append({"role": "assistant", "text": ai_reply})
+        # Store conversation
+        conversations[session_id].append({"role": "user", "parts": [{"text": user_message}]})
+        conversations[session_id].append({"role": "model", "parts": [{"text": ai_reply}]})
 
         return jsonify({
             "reply": ai_reply,
@@ -125,26 +85,29 @@ def chat():
         })
 
     except Exception as e:
-        print("Server Error:", e)
-        return jsonify({"error": "Something went wrong"}), 500
+        print(f"Error: {e}")
+        return jsonify({"error": "I am having trouble processing your request. Please try again."}), 500
 
 
-# 🔥 DATA APIs (GOOD FOR SCORING)
 @app.route("/api/elections")
 def get_elections():
     return jsonify(election_data.get("elections", []))
+
 
 @app.route("/api/parties")
 def get_parties():
     return jsonify(election_data.get("parties", []))
 
+
 @app.route("/api/candidates")
 def get_candidates():
     return jsonify(election_data.get("candidates", []))
 
+
 @app.route("/api/states")
 def get_states():
     return jsonify(election_data.get("states", []))
+
 
 @app.route("/api/faqs")
 def get_faqs():
@@ -152,5 +115,5 @@ def get_faqs():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
